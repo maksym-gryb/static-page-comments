@@ -1,0 +1,1 @@
+A work-in-progress of a commenting system that can be integrated into a statically generate site and would only require a Pocketbase server/service.
