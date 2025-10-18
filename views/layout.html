@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{block "title" .}}Default app title{{end}}</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"></script>
+<script>
+  let authToken = null;
+</script>
+</head>
+<body hx-headers='js:{"Authorization": authToken}'>
+    Header...
+
+    {{block "body" .}}
+        Default app body...
+    {{end}}
+
+    Footer...
+</body>
+
+<script>
+// document.body.addEventListener('htmx:configRequest', function(evt) {
+//     evt.detail.parameters['auth_token'] = getAuthToken(); // add a new parameter into the request
+//     evt.detail.headers['Authentication-Token'] = getAuthToken(); // add a new header into the request
+// });
+document.body.addEventListener('htmx:afterRequest', function(evt) {
+    if (evt.detail.requestConfig.path == "/api/collections/users/auth-with-password")
+    {
+        authToken = JSON.parse(evt.detail.xhr.response)['token']
+    }
+
+    // evt.detail.xhr.response
+    // evt.detail.parameters['auth_token'] = getAuthToken(); // add a new parameter into the request
+    // evt.detail.headers['Authentication-Token'] = getAuthToken(); // add a new header into the request
+});
+</script>
+</html>

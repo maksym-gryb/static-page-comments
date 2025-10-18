@@ -1,0 +1,46 @@
+{{define "body"}}
+<div>
+    <form id="login"
+        hx-post="/api/collections/users/auth-with-password"
+        hx-target="#submit-result"
+        hx-swap="innerHTML">
+        <input type="text" name="identity" />
+        <input type="password" name="password" />
+        <input type="submit" name="submit" />
+    </form>
+</div>
+<hr />
+<!-- <div id="replaceMe">
+    <button class='btn primary' 
+            hx-get="/hello/my-balls"
+            hx-target="#replaceMe"
+            hx-swap="outerHTML">
+        Load Comments
+    </button>
+</div> -->
+        <div id="comments"> ... loading ...</div>
+
+        <div>
+            <button class='btn primary' 
+                    hx-get="/htmx/comments"
+                    hx-target="#comments"
+                    hx-swap="innerHTML">
+                Load Comments
+            </button>
+        </div>
+        <hr />
+        <div>
+            <form id="example-form"
+                  hx-post="/api/collections/comments/records"
+                  hx-target="#submit-result"
+                  hx-swap="innerHTML" >
+
+                <input type="text" name="comment" />
+                <button>
+                    submit comment
+                </button>
+            </form>
+            <hr />
+            <div id="submit-result"></div>
+        </div>
+{{end}}

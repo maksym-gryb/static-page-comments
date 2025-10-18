@@ -1,0 +1,21 @@
+# Ignore PocketBase data folder (contains sensitive information)
+pb_data/
+
+# Ignore system-specific files
+DS_Store
+
+# Ignore build artifacts
+/.builds/
+
+# Ignore test coverage reports
+coverage.out
+
+# Ignore temporary or generated files
+*.todo
+README.html
+CHANGELOG.html
+LICENSE.html
+
+# Environment configuration files (except example)
+env.*
+!.env.example
