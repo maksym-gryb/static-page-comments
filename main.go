@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -22,9 +23,33 @@ type Comment struct {
 func main() {
 	app := pocketbase.New()
 
-	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+	registry := template.NewRegistry()
 
-		registry := template.NewRegistry()
+	// app.OnRecordsListRequest().BindFunc(func(e *core.RecordsListRequestEvent) error {
+	// 	// e.App
+	// 	// e.Collection
+	// 	// e.Records
+	// 	// e.Result
+	// 	// and all RequestEvent fields...
+
+	// 	// comments := []Comment{}
+	// 	// app.DB().NewQuery("select comment from comments").All(&comments)
+
+	// 	html, err := registry.LoadFiles(
+	// 		"views/comments.html",
+	// 	).Render(map[string]any{"Comments": e.Result.Items})
+
+	// 	if err != nil {
+	// 		// or redirect to a dedicated 404 HTML page
+	// 		return e.NotFoundError("", err)
+	// 	}
+
+	// 	return e.HTML(http.StatusOK, html)
+
+	// 	// return e.Next()
+	// })
+
+	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 
 		// serves static files from the provided public dir (if exists)
 		se.Router.GET("/{path...}", apis.Static(os.DirFS("./pb_public"), false))
@@ -60,6 +85,11 @@ func main() {
 		})
 
 		se.Router.GET("/htmx/comments", func(e *core.RequestEvent) error {
+
+			if e.Auth.Id == "" {
+				return e.ForbiddenError("no bueno", errors.New("unauthorized"))
+			}
+
 			comments := []Comment{}
 			app.DB().NewQuery("select comment from comments").All(&comments)
 

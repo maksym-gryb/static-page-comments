@@ -1,5 +1,5 @@
 # Ignore PocketBase data folder (contains sensitive information)
-pb_data/
+*.db*
 
 # Ignore system-specific files
 DS_Store
